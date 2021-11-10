@@ -42,6 +42,10 @@
                         </dependency>
                     </dependencies>
                     <configuration>
+                        <rulesets>
+                            <ruleset>/category/java/codestyle.xml</ruleset>
+                            <ruleset>/category/java/design.xml</ruleset>
+                        </rulesets>
                         <!-- <rulesets>
                             <ruleset>/category/java/codestyle.xml</ruleset>
                             <ruleset>/category/java/design.xml</ruleset>

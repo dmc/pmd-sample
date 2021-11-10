@@ -8,17 +8,9 @@ public class Problem {
     private String type;
 
     // 利用してない変数として指摘される
-    // 無駄
-    // 無駄
-    // 無駄
-    // 無駄
     private String category;
 
     // 利用してない変数として指摘される
-    // 行数をずらす為に無駄なコメントを入れる
-    // 無駄
-    // 無駄
-    // 無駄
     private String comment;
    
     public Problem(int number){
