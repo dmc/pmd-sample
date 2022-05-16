@@ -1,8 +1,10 @@
 # Example workflow
 name: Format
 
-on: [push, pull_request]
-
+on:
+  pull_request:
+    branches: [ main ]
+    
 jobs:
 
   formatting:
