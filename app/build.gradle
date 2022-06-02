@@ -10,12 +10,19 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
     id 'pmd'
+    id "com.github.sherter.google-java-format" version "0.9"
 }
+
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
+
+pmd {
+    ignoreFailures = true
+}
+
 
 dependencies {
     // Use JUnit test framework.
