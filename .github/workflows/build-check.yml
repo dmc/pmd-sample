@@ -14,4 +14,4 @@ jobs:
         run: chmod +x gradlew
 
       - name: pmd
-        run: ./gradlew pmdMain
+        run: ./gradlew compileJava
