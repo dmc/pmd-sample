@@ -20,7 +20,7 @@ repositories {
 }
 
 pmd {
-    ignoreFailures = true
+    // ignoreFailures = true
 }
 
 

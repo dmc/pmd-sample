@@ -1,0 +1,17 @@
+name: Build
+
+on: [pull_request]
+
+jobs:
+
+  formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2 # v2 minimum required
+      
+      - name: gradlew change mode
+        run: chmod +x gradlew
+
+      - name: pmd
+        run: ./gradlew pmdMain
