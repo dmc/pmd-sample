@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: local
+  app:
+    comment: welcome to detroit metal city!!
+  datasource:
+    url: jdbc:mysql://localhost:3301/world?useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Tokyo
+    username: user
+    password: pass
+    driverClassName: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      poolName: master-pool
+      connectionTimeout: 10000
+      connectionTestQuery: SELECT 1
+      maximumPoolSize: 5
+      minimum-idle: 2

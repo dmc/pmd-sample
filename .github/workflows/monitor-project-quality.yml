@@ -1,0 +1,93 @@
+name: 'Quality Monitor'
+
+on: [push,pull_request]
+
+env:
+  JAVA_VERSION: '11.0.11'
+
+jobs:
+  monitor-project-quality:
+    name: Run the quality monitor
+    runs-on: ubuntu-latest
+    steps:
+      - name: setup jdk
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: "${{ env.JAVA_VERSION }}"
+
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: gradle cache setting
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/dependency-check-data
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+
+      - name: Build # (compile, test with code and mutation coverage, and run static analysis)
+        run: |
+          chmod +x gradlew
+          ./gradlew clean build
+
+      - name: Extract pull request number # (commenting on the pull request requires the PR number)
+        uses: jwalton/gh-find-current-pr@v1
+        id: pr
+      
+      - name: Run Quality Monitor
+        uses: uhafner/quality-monitor@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pr-number: ${{ steps.pr.outputs.number }}
+          config: > # Override default configuration: just grade the test results
+            {
+            "coverage": [{
+              "name": "JaCoCo",
+              "tools": [{
+                "id": "jacoco",
+                "name": "Line Coverage",
+                "metric": "line",
+                "sourcePath": "src/main/java",
+                "pattern": "**/jacocoTestReport.xml"
+              }]
+            }],
+            "tests": {
+              "name": "JUnit",
+              "tools": [{
+                "id": "test",
+                "name": "Unit Test",
+                "pattern": "**/test-results/test/TEST*.xml"
+              }]
+            },
+            "analysis": [{
+              "name": "Style",
+              "id": "style",
+              "tools": [{
+                  "id": "checkstyle",
+                  "name": "CheckStyle",
+                  "pattern": "**/checkstyle/main.xml"
+                },
+                {
+                  "id": "pmd",
+                  "name": "PMD",
+                  "pattern": "**/pmd/main.xml"
+              }]
+            },
+            {
+              "name": "Bugs",
+              "id": "bugs",
+              "icon": "bug",
+              "tools": [{
+                "id": "spotbugs",
+                "name": "SpotBugs",
+                "sourcePath": "src/main/java",
+                "pattern": "**/spotbugs/main.xml"
+              }]
+            }]
+            } 

@@ -1,0 +1,90 @@
+plugins {
+  id 'application'
+  id 'java'
+  id 'jacoco'
+  id 'pmd'
+  id 'checkstyle'
+  id 'com.github.spotbugs' version '4.7.2'
+  id 'com.github.sherter.google-java-format' version '0.9'
+  id 'org.springframework.boot' version '2.6.3'
+  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+
+sourceCompatibility = '11'
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  // implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter'
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
+  implementation 'org.springframework.boot:spring-boot-configuration-processor'
+  annotationProcessor 'org.projectlombok:lombok:1.18.28'
+  compileOnly 'org.projectlombok:lombok:1.18.28'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.5.2'
+  testImplementation 'org.junit.platform:junit-platform-launcher:1.6.0'
+}
+
+application {
+  mainClass = 'com.service.system.dmc.App'
+}
+
+tasks.withType(JavaCompile) {
+  options.encoding = 'UTF-8'
+}
+
+jacoco {
+  toolVersion = "0.8.9"
+}
+
+test {
+  ignoreFailures true
+  finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+  dependsOn test
+  reports {
+    html.required = true
+    xml.required = true
+  }
+}
+
+pmd {
+  ignoreFailures = true
+}
+
+spotbugs {
+  toolVersion.set('4.3.0')
+  ignoreFailures.set(true)
+  showStackTraces.set(false)
+}
+
+checkstyle {
+  toolVersion = '9.3'
+  configFile = file("config/checkstyle/google_checks.xml")
+  ignoreFailures = true
+  showViolations = false
+}
+
+test {
+    useJUnitPlatform()
+    ignoreFailures = true
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        html.required = true
+        xml.required = true
+    }
+}
+
+spotbugsTest.enabled = false
+pmdTest.enabled = false
+checkstyleTest.enabled = false
+verifyGoogleJavaFormat.enabled = false
