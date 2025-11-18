@@ -1,6 +1,6 @@
 name: 'Quality Monitor'
 
-on: [push,pull_request]
+on: [workflow_dispatch,push,pull_request]
 
 env:
   JAVA_VERSION: '11.0.11'
