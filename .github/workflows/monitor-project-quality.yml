@@ -49,7 +49,8 @@ jobs:
         uses: uhafner/quality-monitor@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          pr-number: ${{ steps.pr.outputs.number }}
+          # pr-number: ${{ steps.pr.outputs.number }}
+          skip-annotations: true
           config: > # Override default configuration: just grade the test results
             {
             "coverage": [{
