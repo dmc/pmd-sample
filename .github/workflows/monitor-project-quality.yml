@@ -39,7 +39,9 @@ jobs:
       - name: Extract pull request number # (commenting on the pull request requires the PR number)
         uses: jwalton/gh-find-current-pr@v1
         id: pr
-      
+      - uses: jwgmeligmeyling/pmd-github-action@master
+        with:
+          path: '"**/pmd/main.xml' 
       - name: Run Quality Monitor
         uses: uhafner/quality-monitor@v1
         with:
