@@ -52,48 +52,21 @@ jobs:
           # pr-number: ${{ steps.pr.outputs.number }}
           skip-annotations: true
           config: > # Override default configuration: just grade the test results
-            {
-            "coverage": [{
-              "name": "JaCoCo",
+            { 
+              "analysis": [{
+              "name": "checkstyle",
+              "id": "checkstyle",
               "tools": [{
-                "id": "jacoco",
-                "name": "Line Coverage",
-                "metric": "line",
-                "sourcePath": "src/main/java",
-                "pattern": "**/jacocoTestReport.xml"
-              }]
-            }],
-            "tests": {
-              "name": "JUnit",
-              "tools": [{
-                "id": "test",
-                "name": "Unit Test",
-                "pattern": "**/test-results/test/TEST*.xml"
-              }]
-            },
-            "analysis": [{
-              "name": "Style",
-              "id": "style",
-              "tools": [{
-                  "id": "checkstyle",
-                  "name": "CheckStyle",
-                  "pattern": "**/checkstyle/main.xml"
-                },
-                {
                   "id": "pmd",
                   "name": "PMD",
                   "pattern": "**/pmd/main.xml"
               }]
-            },
+            }
+          quality-gates: >
             {
-              "name": "Bugs",
-              "id": "bugs",
-              "icon": "bug",
-              "tools": [{
-                "id": "spotbugs",
-                "name": "SpotBugs",
-                "sourcePath": "src/main/java",
-                "pattern": "**/spotbugs/main.xml"
+              "qualityGates": [{
+                  "metric": "checkstyle",
+                  "threshold": 70.0,
+                  "criticality": "UNSTABLE"
               }]
-            }]
-            } 
+            }
