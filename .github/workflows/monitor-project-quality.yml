@@ -46,7 +46,7 @@ jobs:
           path: '**/pmd/main.xml' 
           
       - name: Run Quality Monitor
-        uses: uhafner/quality-monitor@v1
+        uses: uhafner/quality-monitor@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           # pr-number: ${{ steps.pr.outputs.number }}
@@ -60,6 +60,7 @@ jobs:
                   "id": "pmd",
                   "name": "PMD",
                   "pattern": "**/pmd/main.xml"
+              }]
               }]
             }
           quality-gates: >
